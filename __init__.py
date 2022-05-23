@@ -7,6 +7,7 @@ __description__ = "Count how many grasses (laughes) a telegram user said"
 __dname__ = "grass"
 
 from telethon import events, utils
+from telethon.extensions import markdown
 def setup(bot,storage):
     grasses = ["☘️","🌱","🍀","🌿","草"]
     @bot.on(events.NewMessage())
@@ -26,8 +27,9 @@ def setup(bot,storage):
             await event.respond("您已經草了{}次！".format(grass_times))
         else:
             user = event.sender
-            if event.reply_to:
-                user = await (await event.get_reply_message()).get_sender()
+            reply = await event.get_reply_message()
+            if reply:
+                user = await reply.get_sender()
             grass_times = storage.get("grass_" + str(user),0)
             await event.respond("[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(user),user,grass_times))
 
