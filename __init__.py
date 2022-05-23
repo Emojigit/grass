@@ -27,7 +27,7 @@ def setup(bot,storage):
         else:
             user = event.sender
             if event.reply_to:
-                user = event.get_reply_message().get_sender()
+                user = await (await event.get_reply_message()).get_sender()
             grass_times = storage.get("grass_" + str(user),0)
             await event.respond("[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(user),user,grass_times))
 
