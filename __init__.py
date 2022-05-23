@@ -30,6 +30,6 @@ def setup(bot,storage):
             reply = await event.get_reply_message()
             if reply:
                 user = await reply.get_sender()
-            grass_times = storage.get("grass_" + str(user),0)
-            await event.respond("[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(user),user,grass_times))
+            grass_times = storage.get("grass_" + str(user.id),0)
+            await event.respond("[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(user),user.id,grass_times))
 
