@@ -21,9 +21,13 @@ def setup(bot,storage):
                 break
     @bot.on(events.NewMessage(pattern='/grass'))
     async def grass(event):
-        grass_times = storage.get("grass_" + str(event.sender.id),0)
         if event.is_private:
+            grass_times = storage.get("grass_" + str(event.sender.id),0)
             await event.respond("您已經草了{}次！".format(grass_times))
         else:
-            await event.respond("[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(event.sender),event.sender.id,grass_time))
+            user = event.sender
+            if event.reply_to:
+                user = event.reply_to.get_sender()
+            grass_times = storage.get("grass_" + str(user),0)
+            await event.respond("[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(user),user,grass_time))
 
