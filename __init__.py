@@ -8,14 +8,17 @@ __dname__ = "grass"
 
 from telethon import events, utils
 def setup(bot,storage):
+    grasses = ["☘️","🌱","🍀","🌿","草"]
     @bot.on(events.NewMessage())
     async def grass_msg(event):
-        if "草" in event.message.text:
-            grass_times = storage.get("grass_" + str(event.sender.id),0)
-            grass_times += 1
-            if grass_times % 10 == 0:
-                await event.reply("恭喜，[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(event.sender),event.sender.id,grass_times))
-            storage.set("grass_" + str(event.sender.id), grass_times)
+        for x in grasses:
+            if x in event.message.text:
+                grass_times = storage.get("grass_" + str(event.sender.id),0)
+                grass_times += 1
+                if grass_times % 10 == 0:
+                    await event.reply("恭喜，[{}](tg://user?id={})已經草了{}次！".format(utils.get_display_name(event.sender),event.sender.id,grass_times))
+                storage.set("grass_" + str(event.sender.id), grass_times)
+                break
     @bot.on(events.NewMessage(pattern='/grass'))
     async def grass(event):
         grass_times = storage.get("grass_" + str(event.sender.id),0)
